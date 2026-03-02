@@ -94,14 +94,37 @@ OrderService → calls PaymentService
 ---
 
 ## Project Structure
+
+```text
 ECommerceMicroservices/
 │
 ├── CustomerService/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   └── Dockerfile
+│
 ├── ProductService/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   └── Dockerfile
+│
 ├── OrderService/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   └── Dockerfile
+│
 ├── PaymentService/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   └── Dockerfile
+│
 ├── docker-compose.yml
 └── ECommerceMicroservices.sln
+```
 
 
 Each microservice contains:
