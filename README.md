@@ -169,3 +169,37 @@ cd ECommerceMicroservices
 ###  Step 2 – Build and Run Using Docker
 ```bash
 docker compose up --build
+```
+
+### Step 3 – Access Swagger UI
+----------------------------------------------------
+| Service          | URL                           |
+|------------------|-------------------------------|
+| Customer Service | http://localhost:6002/swagger |
+| Product Service  | http://localhost:6001/swagger |
+| Order Service    | http://localhost:6003/swagger |
+| Payment Service  | http://localhost:6004/swagger |
+----------------------------------------------------
+---
+
+## Docker Commands
+
+Stop containers:
+
+```bash
+docker compose down
+```
+
+Remove volumes:
+
+```bash
+docker compose down -v
+```
+
+Rebuild system:
+
+```bash
+docker compose up --build
+```
+
+---
