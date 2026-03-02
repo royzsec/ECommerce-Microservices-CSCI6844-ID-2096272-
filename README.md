@@ -142,6 +142,7 @@ Make sure you have:
 ```bash
 git clone https://github.com/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-.git
 cd ECommerceMicroservices
-
-Step 2 – Build and Run Using Docker
+```
+###  Step 2 – Build and Run Using Docker
+```bash
 docker compose up --build
