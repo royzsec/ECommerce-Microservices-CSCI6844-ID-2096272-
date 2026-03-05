@@ -108,7 +108,7 @@ Each microservice contains:
 Make sure you have:
 
 - Docker Desktop installed
-- .NET 8 SDK (optional if running only via Docker)
+- .NET 8 SDK
 
 ---
 
