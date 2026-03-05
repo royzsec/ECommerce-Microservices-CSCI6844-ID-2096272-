@@ -35,61 +35,13 @@ Each service runs independently in its own container and maintains its own datab
 
 ### Logical Architecture
 
-CustomerService  → Customer DB  
-ProductService   → Product DB  
-OrderService     → Order DB  
-PaymentService   → Payment DB  
+- CustomerService  → Customer DB  
+- ProductService   → Product DB  
+- OrderService     → Order DB  
+- PaymentService   → Payment DB  
 
-OrderService → validates customer & product  
-OrderService → calls PaymentService  
-
----
-
-## Project Structure
-# E-Commerce Microservices System
-
-## Project Overview
-
-This project implements a containerized microservices-based E-Commerce system using:
-
-- ASP.NET Core Web API (.NET 8)
-- Entity Framework Core (Async)
-- Database-per-service architecture
-- Docker & Docker Compose
-- Synchronous inter-service communication (HttpClient)
-
-The system consists of four independent microservices:
-
-1. Customer Service – Manages customer information  
-2. Product Service – Manages product catalog and stock  
-3. Order Service – Creates and tracks orders  
-4. Payment Service – Processes payments  
-
-Each service runs independently in its own container and maintains its own database.
-
----
-
-## Architecture
-
-### Microservices Architecture Design
-
-- Each service owns its own SQLite database.
-- No shared database between services.
-- Order Service communicates synchronously using HttpClient to:
-  - Customer Service (validate customer existence)
-  - Product Service (validate product existence)
-  - Payment Service (process payment)
-- All services are containerized using Docker.
-
-### Logical Architecture
-
-CustomerService  → Customer DB  
-ProductService   → Product DB  
-OrderService     → Order DB  
-PaymentService   → Payment DB  
-
-OrderService → validates customer & product  
-OrderService → calls PaymentService  
+- OrderService → validates customer & product  
+- OrderService → calls PaymentService  
 
 ---
 
@@ -125,7 +77,7 @@ ECommerceMicroservices/
 ├── docker-compose.yml
 └── ECommerceMicroservices.sln
 ```
-
+---
 
 Each microservice contains:
 - Controllers
