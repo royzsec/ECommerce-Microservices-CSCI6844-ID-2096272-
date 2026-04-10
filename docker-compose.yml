@@ -1,56 +1,97 @@
-version: "3.9"
+version: '3.8'
+
+networks:
+  ecommerce-net:
+    driver: bridge
 
 services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - ecommerce-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   customerservice:
-    build:
-      context: ./CustomerService/CustomerService.Api
+    build: ./CustomerService/CustomerService.Api
+    container_name: customerservice
     ports:
       - "6002:8080"
+    networks:
+      - ecommerce-net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Default: "Data Source=/data/customer.db"
-    volumes:
-      - customer_data:/data
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
 
   productservice:
-    build:
-      context: ./ProductService/ProductService.Api
+    build: ./ProductService/ProductService.Api
+    container_name: productservice
     ports:
       - "6001:8080"
+    networks:
+      - ecommerce-net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Default: "Data Source=/data/product.db"
-    volumes:
-      - product_data:/data
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
 
   orderservice:
-    build:
-      context: ./OrderService/OrderService.Api
+    build: ./OrderService/OrderService.Api
+    container_name: orderservice
     ports:
       - "6003:8080"
+    networks:
+      - ecommerce-net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Default: "Data Source=/data/orders.db"
-      # IMPORTANT: these URLs must be absolute for HttpClient calls inside docker
-      CustomerService__BaseUrl: "http://customerservice:8080"
-      ProductService__BaseUrl: "http://productservice:8080"
-      PaymentService__BaseUrl: "http://paymentservice:8080"
-    volumes:
-      - orders_data:/data
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Port=5672
 
   paymentservice:
-    build:
-      context: ./PaymentService/PaymentService.Api
+    build: ./PaymentService/PaymentService.Api
+    container_name: paymentservice
     ports:
       - "6004:8080"
+    networks:
+      - ecommerce-net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Default: "Data Source=/data/payment.db"
-    volumes:
-      - payment_data:/data
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
 
-volumes:
-  customer_data:
-  product_data:
-  orders_data:
-  payment_data:
+  apigateway:
+    build: ./APIGateway
+    container_name: apigateway
+    ports:
+      - "5000:8080"
+    networks:
+      - ecommerce-net
+    depends_on:
+      - customerservice
+      - productservice
+      - orderservice
+      - paymentservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080

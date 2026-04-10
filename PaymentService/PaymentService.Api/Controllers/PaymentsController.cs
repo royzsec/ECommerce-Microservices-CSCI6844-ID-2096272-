@@ -1,52 +1,43 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PaymentService.Api.Data;
-using PaymentService.Api.Dtos;
 using PaymentService.Api.Models;
 
-namespace PaymentService.Api.Controllers;
-
-[ApiController]
-[Route("api/payments")]
-public class PaymentsController : ControllerBase
+namespace PaymentService.Api.Controllers
 {
-    private readonly PaymentDbContext _db;
-
-    public PaymentsController(PaymentDbContext db)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PaymentsController : ControllerBase
     {
-        _db = db;
-    }
+        private readonly PaymentDbContext _context;
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var payment = await _db.Payments.FirstOrDefaultAsync(p => p.Id == id);
-        if (payment is null) return NotFound();
-        return Ok(payment);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var payments = await _db.Payments.ToListAsync();
-        return Ok(payments);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create(CreatePaymentRequest req)
-    {
-        if (req.OrderId <= 0) return BadRequest("OrderId must be > 0");
-        if (req.Amount <= 0) return BadRequest("Amount must be > 0");
-
-        var payment = new Payment
+        public PaymentsController(PaymentDbContext context)
         {
-            OrderId = req.OrderId,
-            Amount = req.Amount
-        };
+            _context = context;
+        }
 
-        _db.Payments.Add(payment);
-        await _db.SaveChangesAsync();
+        [HttpGet]
+        public async Task<IActionResult> GetPayments()
+        {
+            var payments = await _context.Payments.ToListAsync();
+            return Ok(payments);
+        }
 
-        return Ok(payment);
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPayment(int id)
+        {
+            var payment = await _context.Payments.FindAsync(id);
+            if (payment == null) return NotFound();
+            return Ok(payment);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePayment([FromBody] Payment payment)
+        {
+            payment.PaymentDate = DateTime.UtcNow;
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetPayment), new { id = payment.Id }, payment);
+        }
     }
 }

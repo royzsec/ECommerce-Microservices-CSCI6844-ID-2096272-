@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using CustomerService.Api.Data;
-using CustomerService.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,30 +7,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-var conn = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddDbContext<CustomerDbContext>(opt =>
-    opt.UseSqlite(conn));
+builder.Services.AddDbContext<CustomerDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
-
-
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<CustomerDbContext>();
-    db.Database.EnsureCreated();
-
-    if (!db.Customers.Any())
-    {
-        db.Customers.Add(new Customer
-        {
-            Name = "Test Customer",
-            Email = "test@example.com"
-        });
-
-        db.SaveChanges();
-    }
-}
 
 if (app.Environment.IsDevelopment())
 {
@@ -39,7 +18,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseRouting();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<CustomerDbContext>();
+    dbContext.Database.EnsureCreated();
+}
 
 app.Run();

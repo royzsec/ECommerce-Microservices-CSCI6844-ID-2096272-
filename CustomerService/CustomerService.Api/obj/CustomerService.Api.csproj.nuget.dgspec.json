@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/royzsec/ECommerceMicroservices/CustomerService/CustomerService.Api/CustomerService.Api.csproj": {}
+    "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/CustomerService/CustomerService.Api/CustomerService.Api.csproj": {}
   },
   "projects": {
-    "/Users/royzsec/ECommerceMicroservices/CustomerService/CustomerService.Api/CustomerService.Api.csproj": {
+    "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/CustomerService/CustomerService.Api/CustomerService.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/royzsec/ECommerceMicroservices/CustomerService/CustomerService.Api/CustomerService.Api.csproj",
+        "projectUniqueName": "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/CustomerService/CustomerService.Api/CustomerService.Api.csproj",
         "projectName": "CustomerService.Api",
-        "projectPath": "/Users/royzsec/ECommerceMicroservices/CustomerService/CustomerService.Api/CustomerService.Api.csproj",
+        "projectPath": "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/CustomerService/CustomerService.Api/CustomerService.Api.csproj",
         "packagesPath": "/Users/royzsec/.nuget/packages/",
-        "outputPath": "/Users/royzsec/ECommerceMicroservices/CustomerService/CustomerService.Api/obj/",
+        "outputPath": "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/CustomerService/CustomerService.Api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/royzsec/.nuget/NuGet/NuGet.Config"
@@ -61,6 +61,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.3, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[7.2.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

@@ -1,33 +1,25 @@
 using Microsoft.EntityFrameworkCore;
 using OrderService.Api.Data;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Handle circular references
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DB
-var conn = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddDbContext<OrdersDbContext>(opt => opt.UseSqlite(conn));
+// Add HttpClientFactory for making HTTP calls
+builder.Services.AddHttpClient();
 
-builder.Services.AddHttpClient("ProductService", client =>
-{
-    var baseUrl = builder.Configuration["ProductService:BaseUrl"]!;
-    client.BaseAddress = new Uri(baseUrl);
-});
-
-builder.Services.AddHttpClient("CustomerService", client =>
-{
-    var baseUrl = builder.Configuration["CustomerService:BaseUrl"]!;
-    client.BaseAddress = new Uri(baseUrl);
-});
-
-builder.Services.AddHttpClient("PaymentService", client =>
-{
-    var baseUrl = builder.Configuration["PaymentService:BaseUrl"]!;
-    client.BaseAddress = new Uri(baseUrl);
-});
+builder.Services.AddDbContext<OrderDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -37,14 +29,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseRouting();
 app.MapControllers();
 
-
+// Ensure database is created
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<OrdersDbContext>();
-    db.Database.EnsureCreated();
+    var dbContext = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+    dbContext.Database.EnsureCreated();
 }
 
 app.Run();

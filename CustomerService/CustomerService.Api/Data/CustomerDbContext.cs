@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using CustomerService.Api.Models;
 
-namespace CustomerService.Api.Data;
-
-public class CustomerDbContext : DbContext
+namespace CustomerService.Api.Data
 {
-    public CustomerDbContext(DbContextOptions<CustomerDbContext> options)
-        : base(options) { }
+    public class CustomerDbContext : DbContext
+    {
+        public CustomerDbContext(DbContextOptions<CustomerDbContext> options) : base(options)
+        {
+        }
 
-    public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<Customer> Customers { get; set; }
+    }
 }

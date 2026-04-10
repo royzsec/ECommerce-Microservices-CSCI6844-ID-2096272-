@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/royzsec/ECommerceMicroservices/PaymentService/PaymentService.Api/PaymentService.Api.csproj": {}
+    "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/PaymentService/PaymentService.Api/PaymentService.Api.csproj": {}
   },
   "projects": {
-    "/Users/royzsec/ECommerceMicroservices/PaymentService/PaymentService.Api/PaymentService.Api.csproj": {
+    "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/PaymentService/PaymentService.Api/PaymentService.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/royzsec/ECommerceMicroservices/PaymentService/PaymentService.Api/PaymentService.Api.csproj",
+        "projectUniqueName": "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/PaymentService/PaymentService.Api/PaymentService.Api.csproj",
         "projectName": "PaymentService.Api",
-        "projectPath": "/Users/royzsec/ECommerceMicroservices/PaymentService/PaymentService.Api/PaymentService.Api.csproj",
+        "projectPath": "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/PaymentService/PaymentService.Api/PaymentService.Api.csproj",
         "packagesPath": "/Users/royzsec/.nuget/packages/",
-        "outputPath": "/Users/royzsec/ECommerceMicroservices/PaymentService/PaymentService.Api/obj/",
+        "outputPath": "/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272-/PaymentService/PaymentService.Api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/royzsec/.nuget/NuGet/NuGet.Config"
@@ -61,6 +61,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.3, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[7.2.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
